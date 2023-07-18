@@ -4,7 +4,8 @@
     "target": "esnext",
     "sourceMap": true,
     "watch": true,
-    "lib": ["dom", "es2021.intl"]
+    "lib": ["dom", "es2021.intl"],
+    "allowJs": true
   },
     "exclude": [
     "node_modules"

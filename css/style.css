@@ -1,7 +1,11 @@
-p, span, h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6, p, span {
   font-family: Nunito, sans-serif;
   font-size: 16px;
   line-height: 1.5;
+}
+
+p {
+  text-align: justify;
 }
 
 .uppercase {
@@ -19,81 +23,179 @@ sup {
 
 .dimmed {
   color: gray;
-  font-size: 14px;
-  line-height: 1.53;
+  font-size: 12px;
+  line-height: 1.57;
+}
+
+html, body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.progress-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.progress-container .progress-lists {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.progress-container .progress-lists .step-list {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  justify-content: space-between;
+  position: relative;
+  width: 100%;
+}
+.progress-container .progress-lists .step-list .progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 128px;
+  width: 150px;
+}
+.progress-container .progress-lists .step-list .progress-step.active {
+  font-weight: bold;
+}
+.progress-container .progress-lists .description-list {
+  min-height: 196px;
+  padding: 24px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 1vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.progress-container .progress-lists .description-list .progress-description {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+}
+.progress-container .progress-lists .description-list .progress-description.active {
+  display: flex;
+}
+.progress-container .progress-lists .description-list .progress-description .progress-image {
+  height: 196px;
+  width: 196px;
+  border-radius: 1vw;
+}
+
+.progress-container .line-container .line-wrapper {
+  border-radius: 50vh;
+  background-color: lightgray;
+  overflow: hidden;
+}
+.progress-container .line-container .line-wrapper .progress-line {
+  background: rgb(131, 58, 180);
+  background: linear-gradient(60deg, rgb(131, 58, 180) 0%, rgb(253, 29, 29) 50%, rgb(252, 176, 69) 100%);
+  transition: 500ms ease-in-out;
+}
+.progress-container .line-container .progress-points {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+.progress-container .line-container .progress-points .progress-point {
+  height: 8px;
+  width: 8px;
+  margin: 2px;
+  border: 8px solid white;
+  border-radius: 50vh;
+  filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.5));
+  cursor: pointer;
+  transition: 500ms ease-in-out;
+}
+.progress-container .line-container .progress-points .progress-point.active {
+  margin: 0;
+  border: 10px solid white;
+}
+.progress-container .line-container .progress-points .progress-point.glow {
+  filter: drop-shadow(0px 0px 4px #d31c47);
 }
 
 @media (min-width: 601px) {
-  html, body {
-    height: 100%;
-    width: 100%;
-  }
   .progress-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    column-gap: 0;
-    row-gap: 0;
     width: 1024px;
   }
-  .progress-container .progress-list {
+  .progress-container .progress-lists {
+    row-gap: 32px;
+  }
+  .progress-container .description-list .progress-description {
+    column-gap: 24px;
+  }
+  .progress-container .line-container {
+    position: relative;
+    top: 118px;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    display: flex;
+  }
+  .progress-container .line-container .line-wrapper {
+    height: 8px;
+    width: 884px;
+    margin: 0 8px;
+  }
+  .progress-container .line-container .line-wrapper .progress-line {
+    min-height: 100%;
+    width: 6%;
+  }
+  .progress-container .line-container .progress-points {
+    top: -10px;
+  }
+}
+@media (max-width: 600px) {
+  .progress-container {
     display: flex;
     flex-direction: row;
     align-items: start;
     justify-content: space-between;
-    column-gap: 0;
-    row-gap: 0;
-    position: relative;
-    width: 100%;
+    width: clamp(256px, 40vw, 512px);
+    column-gap: 32px;
   }
-  .progress-container .progress-list .progress-step {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    column-gap: 0;
-    row-gap: 0;
-    height: 128px;
-    width: 180px;
+  .progress-container .progress-lists .step-list .progress-step .progress-heading {
+    display: none;
   }
-  .progress-container .progress-list .progress-step::after {
-    content: "";
-    height: 24px;
-    width: 24px;
-    margin: 4px;
-    box-sizing: border-box;
-    border-radius: 50vh;
-    border: 8px solid white;
-    filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.5));
-  }
-  .progress-container .progress-list .progress-step.active {
-    font-weight: bold;
-  }
-  .progress-container .progress-list .progress-step.active::after {
-    height: 32px;
-    width: 32px;
-    margin: 0;
-    border: 12px solid white;
-  }
-  .progress-container .line-wrapper {
+  .progress-container .progress-lists .step-list .progress-step.active {
     position: absolute;
-    top: -20px;
-    right: auto;
-    bottom: auto;
-    left: auto;
-    height: 8px;
-    width: 84%;
-    position: relative;
-    background-color: lightgray;
-    z-index: -1;
   }
-  .progress-container .line-wrapper .progress-line {
-    height: 100%;
-    width: 6%;
-    background-color: blueviolet;
-    border-radius: 50vh;
-    transition: 500ms ease-in-out;
+  .progress-container .progress-lists .step-list .progress-step.active .progress-heading {
+    display: block;
+  }
+  .progress-container .progress-lists .description-list .progress-description {
+    flex-direction: column;
+    row-gap: 24px;
+  }
+  .progress-container .line-container {
+    display: flex;
+    height: 738px;
+  }
+  .progress-container .line-container .line-wrapper {
+    width: 8px;
+    margin: 8px 0;
+  }
+  .progress-container .line-container .line-wrapper .progress-line {
+    height: 6%;
+    min-width: 100%;
+  }
+  .progress-container .line-container .progress-points {
+    flex-direction: column;
+    left: -10px;
   }
 }
 

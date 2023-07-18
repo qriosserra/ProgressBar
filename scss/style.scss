@@ -2,16 +2,19 @@
 
 @mixin font-properties($size) {
     font-size: $size+px;
-    line-height: math.round((-0.125 * math.sqrt($size) + 2) * 100) / 100;
+    line-height: getLineHeight($size);
 }
 
-@mixin flexbox($direction, $align, $justify, $gap-y, $gap-x) {
+@function getLineHeight($size) {
+    $value: -0.125 * math.sqrt($size) + 2;
+    @return math.round($value * 100) / 100;
+}
+
+@mixin flexbox($direction, $align, $justify) {
     display: flex;
     flex-direction: $direction;
     align-items: $align;
     justify-content: $justify;
-    column-gap: $gap-y;
-    row-gap: $gap-x;
 }
 
 @mixin position($position, $top, $right, $bottom, $left) {
@@ -22,9 +25,13 @@
     left: $left;
 }
 
-p, span, h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6, p, span  {
     font-family: Nunito, sans-serif;
     @include font-properties(16);
+}
+
+p {
+    text-align: justify;
 }
 
 .uppercase {
@@ -42,71 +49,144 @@ sup {
 
 .dimmed {
     color: gray;
-    @include font-properties(14)
+    @include font-properties(12)
+}
+
+html, body {
+    @include flexbox(column, center, center);
+    height: 100%;
+    width: 100%;
+}
+
+.progress-container {
+    @include flexbox(column, center, center);
+    position: relative;
+
+    .progress-lists {
+        @include flexbox(column, center, center);
+        width: 100%;
+
+        .step-list {
+            @include flexbox(row, start, space-between);
+            position: relative;
+            width: 100%;
+
+            .progress-step {
+                @include flexbox(column, center, space-between);
+                height: 128px;
+                width: 150px;
+
+                &.active {
+                    font-weight: bold;
+                }
+            }
+        }
+
+        .description-list {
+            min-height: 196px;
+            padding: 24px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 1vh;
+            @include flexbox(row, center, center);
+
+            .progress-description {
+                display: none;
+                align-items: center;
+                justify-content: space-between;
+                //opacity: 0;
+                //transform: translateY(8px);
+                //transition: 500ms ease-in-out;
+
+                &.active {
+                    display: flex;
+                    //opacity: 1;
+                    //transform: translateY(0);
+                }
+
+                .progress-image {
+                    height: 196px;
+                    width: 196px;
+                    border-radius: 1vw;
+                }
+            }
+        }
+    }
+}
+
+.progress-container .line-container {
+
+    .line-wrapper {
+        border-radius: 50vh;
+        background-color: lightgray;
+        overflow: hidden;
+
+        .progress-line {
+            background: rgb(131,58,180);
+            background: linear-gradient(60deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
+            transition: 500ms ease-in-out;
+        }
+    }
+
+    .progress-points {
+        display: flex;
+        justify-content: space-between;
+        position: absolute;
+        height: 100%;
+        width: 100%;
+
+        .progress-point {
+            height: 8px;
+            width: 8px;
+            margin: 2px;
+            border: 8px solid white;
+            border-radius: 50vh;
+            filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.5));
+            cursor: pointer;
+            transition: 500ms ease-in-out;
+
+            &.active {
+                margin: 0;
+                border: 10px solid white;
+            }
+
+            &.glow {
+                filter: drop-shadow(0px 0px 4px #d31c47);
+            }
+        }
+    }
 }
 
 //DESKTOP
 @media (min-width: 601px) {
 
-    html, body {
-        height: 100%;
-        width: 100%;
-    }
-
     .progress-container {
-        @include flexbox(column, center, center, 0, 0);
         width: 1024px;
 
-        .progress-list {
-            @include flexbox(row, start, space-between, 0, 0);
-            position: relative;
-            width: 100%;
-
-            .progress-step {
-                @include flexbox(column, center, space-between, 0, 0);
-                height: 128px;
-                width: 180px;
-
-                //points
-                &::after {
-                    content: "";
-                    height: 24px;
-                    width: 24px;
-                    margin: 4px;
-                    box-sizing: border-box;
-                    border-radius: 50vh;
-                    border: 8px solid white;
-                    filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.5));
-                }
-
-                &.active {
-                    font-weight: bold;
-
-                    &::after {
-                        height: 32px;
-                        width: 32px;
-                        margin: 0;
-                        border: 12px solid white;
-                    }
-                }
-            }
+        .progress-lists {
+            row-gap: 32px;
         }
 
+        .description-list .progress-description {
+            column-gap: 24px;
+        }
 
-        .line-wrapper {
-            @include position(absolute, -20px, auto, auto, auto);
-            height: 8px;
-            width: 84%;
-            position: relative;
-            background-color: lightgray;
-            z-index: -1;
+        .line-container {
+            @include position(relative, 118px, auto, auto, auto);
+            display: flex;
 
-            .progress-line {
-                height: 100%;
-                width: 6%;
-                background-color: blueviolet;
-                border-radius: 50vh;
-                transition: 500ms ease-in-out;
+            .line-wrapper {
+                height: 8px;
+                width: 884px;
+                margin: 0 8px;
+
+                .progress-line {
+                    min-height: 100%;
+                    width: 6%;
+                }
+            }
+
+            .progress-points {
+                top: -10px;
             }
         }
     }
@@ -115,4 +195,55 @@ sup {
 //MOBILE
 @media (max-width: 600px) {
 
+    .progress-container {
+        @include flexbox(row, start, space-between);
+        width: clamp(256px, 40vw, 512px);
+        column-gap: 32px;
+
+        .progress-lists .step-list {
+
+            .progress-step {
+
+                .progress-heading {
+                    display: none;
+                }
+
+                &.active  {
+                    position: absolute;
+
+                    & .progress-heading {
+                        display: block;
+                    }
+                }
+            }
+        }
+
+        .progress-lists .description-list {
+
+            .progress-description {
+                flex-direction: column;
+                row-gap: 24px;
+            }
+        }
+
+        .line-container {
+            display: flex;
+            height: 738px;
+
+            .line-wrapper {
+                width: 8px;
+                margin: 8px 0;
+
+                .progress-line {
+                    height: 6%;
+                    min-width: 100%;
+                }
+            }
+
+            .progress-points {
+                flex-direction: column;
+                left: -10px
+            }
+        }
+    }
 }
