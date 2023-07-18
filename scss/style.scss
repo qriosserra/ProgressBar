@@ -75,6 +75,7 @@ html, body {
                 @include flexbox(column, center, space-between);
                 height: 128px;
                 width: 150px;
+                cursor: pointer;
 
                 &.active {
                     font-weight: bold;

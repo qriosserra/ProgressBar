@@ -65,6 +65,7 @@ html, body {
   justify-content: space-between;
   height: 128px;
   width: 150px;
+  cursor: pointer;
 }
 .progress-container .progress-lists .step-list .progress-step.active {
   font-weight: bold;
